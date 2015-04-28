@@ -1,4 +1,4 @@
-from bt_module import *
+from bs_module import *
 
 new_board = board_fill(2)
 # print new_board
