@@ -96,7 +96,7 @@ def generate_location(size, board_list, other_ships_list):
         for col_num in range(start_coord[1] + 1, start_coord[1] + size):
             location.append((start_coord[0], col_num))
 
-    elif ship_direction == "left":
+    elif direction == "left":
         location.append(start_coord)
         for col_num in range(start_coord[1] - 1, start_coord[1] - size, -1):
             location.append((start_coord[0], col_num))
