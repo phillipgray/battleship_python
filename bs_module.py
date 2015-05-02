@@ -1,8 +1,14 @@
 from random import choice
 # define classes
 
+class BattleshipGame(object):
+    """docstring for BattleshipGame"""
+    def __init__(self, board_size):
+        # super(BattleshipGame, self).__init__()
+        self.board_size = board_size
 
-class Ship(object):
+
+class Ship(BattleshipGame):
     """
     docstring for Ship class
     each ship has the following attributes
@@ -11,7 +17,7 @@ class Ship(object):
     location: list of tuples, of int size
     """
     def __init__(self, ship_type, size, location):
-        super(Ship, self).__init__()
+        # super(Ship, self).__init__()
         self.ship_type = ship_type
         self.size = size
         self.location = location
@@ -111,14 +117,16 @@ def generate_location(size, board_list, other_ships_list):
         for row_num in range(start_coord[0] - 1, start_coord[0] - size, -1):
             location.append((row_num, start_coord[1]))
 
-    print start_coord
-    print direction
-    print location
+    # print start_coord
+    # print direction
+    # print location
 
     for points in location:
         if points not in board_list or points in other_ships_list:
-            print "nope"
+            # print "nope"
             return generate_location(size, board_list, other_ships_list)
 
     return location
 
+
+def place_ships(ship_dict, )
