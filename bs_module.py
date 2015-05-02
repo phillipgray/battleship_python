@@ -1,11 +1,46 @@
 from random import choice
+
 # define classes
 
 class BattleshipGame(object):
-    """docstring for BattleshipGame"""
+    """
+    docstring for BattleshipGame
+    this class will create a new board
+    and
+    """
     def __init__(self, board_size):
         # super(BattleshipGame, self).__init__()
         self.board_size = board_size
+
+    def board_fill(self):
+        '''
+        this method takes the board size attribute and
+        returns a 2d list of all spaces for display
+        '''
+        board = []
+        first_col = []
+        horiz_key = "+abcdefghij"
+
+        for row in range(self.board_size + 1):
+            if row == 0:
+                for char in horiz_key[0:self.board_size + 1]:
+                    if char == '+':
+                        first_col.append(" " + char)  # this if/then is to fix spacing
+                    else:
+                        first_col.append(char)
+                board.append(first_col)
+            else:
+                if row <= 9:  # this if/then is to fix spacing
+                    this_row = [" " + str(row), ]
+                else:
+                    this_row = [str(row), ]
+                this_row.extend(["O"] * self.board_size)
+                board.append(this_row)
+        return board
+
+    def print_board(board):
+        for row in board:
+            print " ".join(row)
 
 
 class Ship(BattleshipGame):
@@ -36,32 +71,8 @@ ship_options = {
 # helper functions
 
 
-def board_fill(board_size):
-    board = []
-    first_col = []
-    horiz_key = "+abcdefghij"
-
-    for row in range(board_size + 1):
-        if row == 0:
-            for char in horiz_key[0:board_size + 1]:
-                if char == '+':
-                    first_col.append(" " + char)  # this if/then is to fix spacing
-                else:
-                    first_col.append(char)
-            board.append(first_col)
-        else:
-            if row <= 9:  # this if/then is to fix spacing
-                this_row = [" " + str(row), ]
-            else:
-                this_row = [str(row), ]
-            this_row.extend(["O"] * board_size)
-            board.append(this_row)
-    return board
 
 
-def print_board(board):
-    for row in board:
-        print " ".join(row)
 
 
 def generate_position_list(board_size):
@@ -128,5 +139,3 @@ def generate_location(size, board_list, other_ships_list):
 
     return location
 
-
-def place_ships(ship_dict, )
