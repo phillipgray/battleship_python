@@ -2,15 +2,30 @@ from random import choice
 
 # define classes
 
-class BattleshipGame(object):
+
+class GameBoard(object):
     """
-    docstring for BattleshipGame
-    this class will create a new board
-    and
+    this class creates a new board
     """
     def __init__(self, board_size):
-        # super(BattleshipGame, self).__init__()
         self.board_size = board_size
+        self.all_spaces = None
+        self.hits = []
+        self.misses = []
+        self.display_board = None
+
+    def set_position_list(self):
+        '''
+        method takes attr board size
+        returns list of tuples, where
+        (row, column), which compose all the board spaces
+        '''
+        position_list = []
+        for row in range(1, self.board_size + 1):
+            for column in range(1, self.board_size + 1):
+                position_list.append((row, column), )
+        self.all_spaces = position_list
+
 
     def board_fill(self):
         '''
@@ -36,14 +51,20 @@ class BattleshipGame(object):
                     this_row = [str(row), ]
                 this_row.extend(["O"] * self.board_size)
                 board.append(this_row)
-        return board
+        self.display_board = board
 
-    def print_board(board):
-        for row in board:
+    def board_edit(self):
+        for coord in self.hits:
+            self.display_board[coord[0]][coord[1]] = "X"
+        for coord in self.misses:
+            self.display_board[coord[0]][coord[1]] = "•"
+
+    def print_board(self):
+        for row in self.display_board:
             print " ".join(row)
 
 
-class Ship(BattleshipGame):
+class Ship(object):
     """
     docstring for Ship class
     each ship has the following attributes
@@ -68,6 +89,16 @@ ship_options = {
     "patrol boat": 2,
 }
 
+class BattleshipGame():
+    """
+    docstring for BattleshipGame
+    this class will create a new game
+    the child classes are 
+    """
+    def __init__(self, board_size):
+        # super(BattleshipGame, self).__init__()
+        self.board_size = board_size
+
 # helper functions
 
 
@@ -75,18 +106,6 @@ ship_options = {
 
 
 
-def generate_position_list(board_size):
-    '''
-    function takes board size as int
-    returns list of tuples, where
-    (row, column)
-    '''
-    position_list = []
-    for row in range(1, board_size + 1):
-        for column in range(1, board_size + 1):
-            position_list.append((row, column), )
-    # print position_list
-    return position_list
 
 
 def ship_start_space(available_space_list):
