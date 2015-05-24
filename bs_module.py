@@ -10,11 +10,31 @@ ship_options = {
     "patrol boat": 2,
 }
 
+# helper function
+def shot_convert(letter_num):
+    '''
+    this function takes the 2 char letter_num board space
+    (column row) and converts it to the int tuple (row, column)
+    '''
+    pre_tuple = list(letter_num)
+    translation_key = {"a":1, "b":2, "c":3, "d":4, "e":5, "f":6, "g":7, "h":8, "i":9, "j":10}
+    return (int(pre_tuple[1]), translation_key[pre_tuple[0].lower()])
+
 # define classes
+
+# class GameCoord(object):
+#     def __init__(self, letter_num):
+#         self.letter_num = letter_num
+#         self.row, self.column = self.translate(letter_num)
 
 class GameBoard(object):
     """
-    this class creates a new board
+    this class creates a new board, with these attributes
+    board_size: int, length and width of board in spaces
+    all_spaces: list of tuples, (row, column), of all spaces
+    hits: list of tuples, (row, column), of all the hits
+    misses: list of tuples, (row, column), of all the misses
+    display_board: all_spaces as 2D list
     """
     def __init__(self, board_size):
         self.board_size = board_size
@@ -81,6 +101,7 @@ class Ship(object):
     ship_type: str
     size: int
     location: list of tuples, of int size
+    is_sunk: bool, is the ship sunk?
     """
     # list (of tuples) of all occupied spaces
     # needs to be reset for each new game!
@@ -90,6 +111,7 @@ class Ship(object):
         self.ship_type = ship_type
         self.size = ship_options[ship_type]
         self.location = None
+        self.is_sunk = False
 
     def ship_direction(self):
         '''
@@ -129,3 +151,13 @@ class Ship(object):
         self.location = ship_location
         for coord in ship_location:
             Ship.occupied_spaces.append(coord)
+
+    def damage_checker(self, ship_list, hits_coord_list):
+        for ships in ships_list:
+            for coord in ships.location:
+                if coord not in hits_coord_list:
+                    break
+            else:
+                if ships.is_sunk is False:
+                    print "You've sunk the enemy {}. Huzzah! Battle on!".format(ships.ship_type)
+                    ships.is_sunk = True
