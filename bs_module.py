@@ -20,6 +20,15 @@ def shot_convert(letter_num):
     translation_key = {"a":1, "b":2, "c":3, "d":4, "e":5, "f":6, "g":7, "h":8, "i":9, "j":10}
     return (int(pre_tuple[1]), translation_key[pre_tuple[0].lower()])
 
+def damage_checker(ship_list, hits_coord_list):
+        for ships in ship_list:
+            for coord in ships.location:
+                if coord not in hits_coord_list:
+                    break
+            else:
+                if ships.is_sunk is False:
+                    print "You've sunk the enemy {}. Huzzah! Battle on!".format(ships.ship_type)
+                    ships.is_sunk = True
 # define classes
 
 # class GameCoord(object):
@@ -81,7 +90,7 @@ class GameBoard(object):
                     this_row = [str(row), ]
                 this_row.extend(["O"] * self.board_size)
                 board.append(this_row)
-        self.display_board = board
+        return board
 
     def board_edit(self):
         for coord in self.hits:
@@ -152,12 +161,20 @@ class Ship(object):
         for coord in ship_location:
             Ship.occupied_spaces.append(coord)
 
-    def damage_checker(self, ship_list, hits_coord_list):
-        for ships in ships_list:
-            for coord in ships.location:
-                if coord not in hits_coord_list:
-                    break
-            else:
-                if ships.is_sunk is False:
-                    print "You've sunk the enemy {}. Huzzah! Battle on!".format(ships.ship_type)
-                    ships.is_sunk = True
+    
+# test = GameBoard(8)
+# print test.all_spaces
+# print test.display_board
+# test.print_board()
+# ship0 = Ship('patrol boat')
+# ship0.location = [(1,1), (1,2)]
+# ship1 = Ship('patrol boat')
+# ship1.location = [(1,3), (1,4)]
+# group = [ship0, ship1]
+# test_fire = []
+# while True:
+#     test = tuple(int(x.strip()) for x in raw_input("enter: ").split(','))
+#     test_fire.append(test)
+#     print test_fire
+#     damage_checker(group, test_fire)
+
