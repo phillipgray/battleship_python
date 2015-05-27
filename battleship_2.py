@@ -10,7 +10,7 @@ while True:
         print "What size ocean (in spaces) would you like to play on? (6-10 spaces)"
         size = int(raw_input("Enter size: "))
         if not size >= 6 and size <= 10:
-            raise ValueError("Value out of bounds!")
+            raise ValueError
             continue
         break
     except ValueError:
@@ -86,7 +86,7 @@ while game_continue is True and missed_shots > 0:
 
     # check for game ending condtions: all ships sunk
     for ships in fleet:
-        if ships.is_sunk is False:
+        if ships.is_sunk is False and missed_shots > 0:
             print "Naval exercises continue! Battle on!"
             break
     else:
