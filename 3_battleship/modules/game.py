@@ -1,5 +1,5 @@
 import uuid
-from board import GameBoard
+import board
 
 
 class Game(object):
@@ -30,7 +30,13 @@ class Player(object):
     """
     def __init__(self):
         self.name = None
-        self.own_board = Gameboard()
-        self.other_board = GameBoard()
+        self.own_board = board.GameBoard()
+        self.other_board = board.GameBoard()
         self.move_log = {}
         self.fleet = []
+
+    def game_display(self):
+        print "My Board"
+        self.own_board.print_board()
+        print"\n\n Enemy Board"
+        self.other_board.print_board()
