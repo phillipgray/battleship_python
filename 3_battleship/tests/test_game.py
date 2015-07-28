@@ -1,6 +1,6 @@
 import unittest
-from modules.game import Game
-from modules.player import Player
+from modules.game import Game, Player
+from modules.board import GameBoard
 
 
 class GameModuleTest(unittest.TestCase):
@@ -31,6 +31,17 @@ class GameModuleTest(unittest.TestCase):
 
     def test_player_2_is_none(self):
         self.assertIsNone(self.game_1.player_2)
+
+
+class PlayerModuleTest(unittest.TestCase):
+
+    def setUp(self):
+        self.player_1 = Player()
+
+    def test_player_prints_title_and_name(self):
+        self.player_1.name = "Phillip"
+        self.assertEqual(self.player_1.name, "Phillip")
+
 
 if __name__ == '__main__':
     unittest.main()
