@@ -1,3 +1,5 @@
+from random import choice
+
 class GameBoard(object):
     """
     this class creates a new board, with these attributes
@@ -77,10 +79,18 @@ class Ship(object):
     # list (of tuples) of all occupied spaces
     # needs to be reset for each new game!
     occupied_spaces = []
+    
+    SHIP_OPTIONS = {
+        "aircraft carrier": 5,
+        "battleship": 4,
+        "submarine": 3,
+        "destroyer": 3,
+        "patrol boat": 2,
+    }
 
     def __init__(self, ship_type):
         self.ship_type = ship_type
-        self.size = ship_options[ship_type]
+        self.size = self.SHIP_OPTIONS[ship_type]
         self.location = None
         self.is_sunk = False
 
@@ -90,7 +100,7 @@ class Ship(object):
         '''
         return choice(["right", "left", "up", "down"])
 
-    def set_location(self, board_list):
+    def random_set_location(self, board_list):
         ship_location = []
         direction = self.ship_direction()
         start_coord = choice(filter(lambda coord: coord not in Ship.occupied_spaces, board_list))
@@ -117,7 +127,7 @@ class Ship(object):
 
         for points in ship_location:
             if points not in board_list or points in Ship.occupied_spaces:
-                return self.set_location(board_list)
+                return self.random_set_location(board_list)
 
         self.location = ship_location
         for coord in ship_location:

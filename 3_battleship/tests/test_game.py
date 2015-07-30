@@ -1,6 +1,6 @@
 import unittest
 from modules.game import Game, Player
-from modules.board import GameBoard
+from modules.board import GameBoard, Ship
 
 
 class GameModuleTest(unittest.TestCase):
@@ -38,9 +38,14 @@ class PlayerModuleTest(unittest.TestCase):
     def setUp(self):
         self.player_1 = Player()
 
-    def test_player_prints_title_and_name(self):
-        self.player_1.name = "Phillip"
-        self.assertEqual(self.player_1.name, "Phillip")
+    def test_create_ships_in_fleet(self):
+        self.player_1.create_ships()
+        self.assertEqual(len(self.player_1.fleet), 5)
+    
+    def test_all_ship_types_in_fleet(self):
+        self.player_1.create_ships()
+        ship_list = [ship.ship_type for ship in self.player_1.fleet]
+        self.assertItemsEqual(ship_list, Ship.SHIP_OPTIONS.keys())
 
 
 if __name__ == '__main__':
