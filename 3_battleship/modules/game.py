@@ -24,6 +24,7 @@ class Game(object):
         '''server methods will live here. someday'''
         pass
 
+
 class Player(object):
     """
     docstring for Player
@@ -40,7 +41,9 @@ class Player(object):
         self.own_board.print_board()
         print"\n\n Enemy Ocean"
         self.other_board.print_board()
-        
+
     def create_ships(self):
         self.fleet = [Ship(ship) for ship in Ship.SHIP_OPTIONS]
-            
+
+    def place_ships(self):
+        pass
