@@ -59,7 +59,11 @@ class Player(object):
         return "Fleet of ships placed under your command, Captain."
 
     def place_ships(self):
-        '''this function should be mapped over the fleet (list) of ships'''
+        '''
+        this method iterates over ships in fleet
+        and user assigns coordinates and direction to place ships on game board
+        checks that coordinates are valid, prompts to re-enter if invalid
+        '''
         for ship in self.fleet:
             while True:
                 raw_starting_space = raw_input("Choose a starting space for the {} \
@@ -82,9 +86,11 @@ class Player(object):
                         if points not in self.own_board.all_spaces or points in self.occupied_spaces:
                             print "Invalid placement: one or more coordinates is taken or doesn't exist"
                             raw_input("Press any key to try again")
-                            continue
-                    for coord in ship.location:
-                        self.occupied_spaces.append(coord)
-                    print "{} location set.".format(ship.ship_type)
-                    break
+                            break
+                    else:
+                        for coord in ship.location:
+                            self.occupied_spaces.append(coord)
+                        print "{} location set.".format(ship.ship_type)
+                        break
+                    continue
         return "Fleet locations set, Captain."
