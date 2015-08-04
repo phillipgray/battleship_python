@@ -9,7 +9,7 @@ class GameBoard(object):
     misses: list of tuples, (row, column), of all the misses
     display_board: all_spaces as 2D list
     """
-    def __init__(self, board_size=8):
+    def __init__(self, board_size=10):
         self.board_size = board_size
         self.all_spaces = self.set_position_list()
         self.hits = []
@@ -62,6 +62,16 @@ class GameBoard(object):
         for coord in self.misses:
             self.display_board[coord[0]][coord[1]] = "-"
 
+    def draw_ships(self, ship_list):
+        '''
+        this method takes a ship list (Player.fleet)
+        and draws the location of the ships on the board
+        '''
+        for boat in ship_list:
+            boat_marker = boat.ship_type[0].upper()
+            for coord in boat.location:
+                self.display_board[coord[0]][coord[1]] = boat_marker
+
     def print_board(self):
         for row in self.display_board:
             print " ".join(row)
@@ -79,7 +89,7 @@ class Ship(object):
     # list (of tuples) of all occupied spaces
     # needs to be reset for each new game!
     occupied_spaces = []
-    
+
     SHIP_OPTIONS = {
         "aircraft carrier": 5,
         "battleship": 4,
@@ -100,10 +110,10 @@ class Ship(object):
         '''
         return choice(["right", "left", "up", "down"])
 
-    def random_set_location(self, board_list):
+    def random_set_location(self, board_list, occupied_spaces_list):
         ship_location = []
         direction = self.ship_direction()
-        start_coord = choice(filter(lambda coord: coord not in Ship.occupied_spaces, board_list))
+        start_coord = choice(filter(lambda coord: coord not in occupied_spaces_list, board_list))
 
         if direction == "right":
             ship_location.append(start_coord)
@@ -126,9 +136,25 @@ class Ship(object):
                 ship_location.append((row_num, start_coord[1]))
 
         for points in ship_location:
-            if points not in board_list or points in Ship.occupied_spaces:
+            if points not in board_list or points in occupied_spaces_list:
                 return self.random_set_location(board_list)
 
         self.location = ship_location
         for coord in ship_location:
-            Ship.occupied_spaces.append(coord)
+            occupied_spaces_list.append(coord)
+
+    def choose_location(self, start_coord, direction):
+        '''
+        this method takes a start coord (row, col) and either 'right' or 'down'
+        as a direction, and assigns the appropriate location to a ship
+        note: does not check that any coords are valid/playable!
+        '''
+        ship_location = []
+        ship_location.append(start_coord)
+        if direction.lower() == "right" or direction.lower() == "r":
+            for col_num in range(start_coord[1] + 1, start_coord[1] + self.size):
+                ship_location.append((start_coord[0], col_num))
+        elif direction.lower() == "down" or direction.lower() == "d":
+            for row_num in range(start_coord[0] + 1, start_coord[0] + self.size):
+                ship_location.append((row_num, start_coord[1]))
+        self.location = ship_location

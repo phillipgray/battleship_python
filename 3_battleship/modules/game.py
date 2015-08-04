@@ -2,6 +2,18 @@ import uuid
 from board import GameBoard, Ship
 
 
+# helper method
+
+def shot_convert(letter_num):
+    '''
+    this function takes the 2 char letter_num board space
+    (column row) and converts it to the int tuple (row, column)
+    '''
+    pre_tuple = list(letter_num)
+    translation_key = {"a":1, "b":2, "c":3, "d":4, "e":5, "f":6, "g":7, "h":8, "i":9, "j":10}
+    return (int(pre_tuple[1]), translation_key[pre_tuple[0].lower()])
+
+
 class Game(object):
     """
     each instance of Game has the following attributes
@@ -24,7 +36,6 @@ class Game(object):
         '''server methods will live here. someday'''
         pass
 
-
 class Player(object):
     """
     docstring for Player
@@ -35,6 +46,7 @@ class Player(object):
         self.other_board = GameBoard()
         self.move_log = {}
         self.fleet = []
+        self.occupied_spaces = []
 
     def game_display(self):
         print "My Ocean"
@@ -44,6 +56,35 @@ class Player(object):
 
     def create_ships(self):
         self.fleet = [Ship(ship) for ship in Ship.SHIP_OPTIONS]
+        return "Fleet of ships placed under your command, Captain."
 
     def place_ships(self):
-        pass
+        '''this function should be mapped over the fleet (list) of ships'''
+        for ship in self.fleet:
+            while True:
+                raw_starting_space = raw_input("Choose a starting space for the {} \
+(format: letter number, e.g. B3): ".format(ship.ship_type))
+                start_coord = shot_convert(raw_starting_space)
+                if start_coord not in self.own_board.all_spaces:
+                    print "Not a valid space!"
+                    raw_input("Press any key to enter another coordinate.")
+                    continue
+                elif start_coord in self.occupied_spaces:
+                    print "This position already occupied!"
+                    raw_input("Press any key to enter another coordinate.")
+                    continue
+                else:
+                    direction = raw_input("Choose the ship orientation: spanning either\
+ {} spaces '(r)ight' or '(d)own' from starting space: ".format(ship.size - 1))
+                    ship.choose_location(start_coord, direction)
+
+                    for points in ship.location:
+                        if points not in self.own_board.all_spaces or points in self.occupied_spaces:
+                            print "Invalid placement: one or more coordinates is taken or doesn't exist"
+                            raw_input("Press any key to try again")
+                            continue
+                    for coord in ship.location:
+                        self.occupied_spaces.append(coord)
+                    print "{} location set.".format(ship.ship_type)
+                    break
+        return "Fleet locations set, Captain."
