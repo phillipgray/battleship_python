@@ -12,7 +12,16 @@ def shot_convert(letter_num):
     pre_tuple = list(letter_num)
     translation_key = {"a":1, "b":2, "c":3, "d":4, "e":5, "f":6, "g":7, "h":8, "i":9, "j":10}
     return (int(pre_tuple[1]), translation_key[pre_tuple[0].lower()])
-
+    
+def damage_checker(ship_list, hits_coord_list):
+        for ships in ship_list:
+            for coord in ships.location:
+                if coord not in hits_coord_list:
+                    break
+            else:
+                if ships.is_sunk is False:
+                    print "You've sunk the enemy {}. Huzzah! Battle on!".format(ships.ship_type)
+                    ships.is_sunk = True
 
 class Game(object):
     """
@@ -49,15 +58,24 @@ class Player(object):
         self.occupied_spaces = []
 
     def game_display(self):
+        print self.name + "'s turn"
         print "My Ocean"
+        self.own_board.board_edit()
         self.own_board.print_board()
         print"\n\n Enemy Ocean"
+        self.other_board.board_edit()
         self.other_board.print_board()
 
     def create_ships(self):
         self.fleet = [Ship(ship) for ship in Ship.SHIP_OPTIONS]
         return "Fleet of ships placed under your command, Captain."
 
+    def random_place_ships(self):
+        for ship in self.fleet:
+            ship.random_set_location(self.own_board.all_spaces, self.occupied_spaces)
+        self.own_board.draw_ships(self.fleet)
+        self.game_display()
+        
     def place_ships(self):
         '''
         this method iterates over ships in fleet
@@ -74,11 +92,11 @@ class Player(object):
 
                 if start_coord not in self.own_board.all_spaces:
                     print "Not a valid space!"
-                    raw_input("Press any key to enter another coordinate.")
+                    raw_input("Press Enter to try another coordinate.")
                     continue
                 elif start_coord in self.occupied_spaces:
                     print "This position already occupied!"
-                    raw_input("Press any key to enter another coordinate.")
+                    raw_input("Press Enter to try another coordinate.")
                     continue
                 else:
                     direction = raw_input("Choose the ship orientation: spanning either\
@@ -88,11 +106,11 @@ class Player(object):
                     for points in ship.location:
                         if points not in self.own_board.all_spaces:
                             print "Invalid placement: one or more coordinates doesn't exist"
-                            raw_input("Press any key to try again")
+                            raw_input("Press Enter to try again")
                             continue
                         elif points in self.occupied_spaces:
                             print "Invalid placement: one or more coordinates is taken"
-                            raw_input("Press any key to try again")
+                            raw_input("Press Enter to try again")
                             break
                     else:
                         for coord in ship.location:
@@ -103,4 +121,27 @@ class Player(object):
         return "Fleet locations set, Captain."
 
     def fire_shot(self, other_player):
-        pass
+        self.game_display()
+        while True:
+            raw_shot = raw_input("Enter the coordinates for your next shot in a letter number pair, e.g. 'B3' ")
+            shot_tuple = shot_convert(raw_shot)
+            
+            if shot_tuple not in other_player.own_board.all_spaces:
+                print "Captain: those coordinates are out of range. Our next munitions supply is days away! We must conserve shells!"
+                continue
+                
+            elif shot_tuple in other_player.own_board.hits or shot_tuple in other_player.own_board.misses:
+                print "You've already fired on these coordinates! We must conserve munitions!"
+                continue
+                
+            elif shot_tuple in other_player.occupied_spaces:
+                print "Hit! Enemy sustained damage!"
+                other_player.own_board.hits.append(shot_tuple)
+                self.other_board.hits.append(shot_tuple)
+                damage_checker(other_player.fleet, other_player.own_board.hits)
+                break
+            else:
+                print "Miss! Take aim elsewhere, Captain."
+                other_player.own_board.misses.append(shot_tuple)
+                self.other_board.misses.append(shot_tuple)
+                break

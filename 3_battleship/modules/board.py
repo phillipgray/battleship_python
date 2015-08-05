@@ -140,7 +140,7 @@ class Ship(object):
 
         for points in ship_location:
             if points not in board_list or points in occupied_spaces_list:
-                return self.random_set_location(board_list)
+                return self.random_set_location(board_list, occupied_spaces_list)
 
         self.location = ship_location
         for coord in ship_location:
