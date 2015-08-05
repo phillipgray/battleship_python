@@ -65,6 +65,8 @@ class Player(object):
         checks that coordinates are valid, prompts to re-enter if invalid
         '''
         for ship in self.fleet:
+            self.own_board.draw_ships(self.fleet)
+            self.game_display()
             while True:
                 raw_starting_space = raw_input("Choose a starting space for the {} \
 (format: letter number, e.g. B3): ".format(ship.ship_type))
@@ -99,3 +101,6 @@ class Player(object):
                         break
                     continue
         return "Fleet locations set, Captain."
+
+    def fire_shot(self, other_player):
+        pass

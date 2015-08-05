@@ -68,9 +68,12 @@ class GameBoard(object):
         and draws the location of the ships on the board
         '''
         for boat in ship_list:
-            boat_marker = boat.ship_type[0].upper()
-            for coord in boat.location:
-                self.display_board[coord[0]][coord[1]] = boat_marker
+            if boat.location is not None:
+                boat_marker = boat.ship_type[0].upper()
+                for coord in boat.location:
+                    self.display_board[coord[0]][coord[1]] = boat_marker
+            else:
+                pass
 
     def print_board(self):
         for row in self.display_board:
