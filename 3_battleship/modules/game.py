@@ -69,6 +69,7 @@ class Player(object):
                 raw_starting_space = raw_input("Choose a starting space for the {} \
 (format: letter number, e.g. B3): ".format(ship.ship_type))
                 start_coord = shot_convert(raw_starting_space)
+
                 if start_coord not in self.own_board.all_spaces:
                     print "Not a valid space!"
                     raw_input("Press any key to enter another coordinate.")
@@ -83,8 +84,12 @@ class Player(object):
                     ship.choose_location(start_coord, direction)
 
                     for points in ship.location:
-                        if points not in self.own_board.all_spaces or points in self.occupied_spaces:
-                            print "Invalid placement: one or more coordinates is taken or doesn't exist"
+                        if points not in self.own_board.all_spaces:
+                            print "Invalid placement: one or more coordinates doesn't exist"
+                            raw_input("Press any key to try again")
+                            continue
+                        elif points in self.occupied_spaces:
+                            print "Invalid placement: one or more coordinates is taken"
                             raw_input("Press any key to try again")
                             break
                     else:
