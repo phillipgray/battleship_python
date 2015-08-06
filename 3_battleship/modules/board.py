@@ -1,5 +1,6 @@
 from random import choice
 
+
 class GameBoard(object):
     """
     this class creates a new board, with these attributes
@@ -52,7 +53,7 @@ class GameBoard(object):
                     this_row = [" " + str(row), ]
                 else:
                     this_row = [str(row), ]
-                this_row.extend(["O"] * self.board_size)
+                this_row.extend(["*"] * self.board_size)
                 board.append(this_row)
         return board
 
