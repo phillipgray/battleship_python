@@ -5,6 +5,8 @@ import random
 
 
 # helper functions
+def pause_until_enter(instructions="continue"):
+    raw_input("Press Enter to {}".format(instructions))
 
 def shot_convert(letter_num):
     '''
@@ -27,6 +29,7 @@ def damage_checker(ship_list, hits_coord_list):
                 if ships.is_sunk is False:
                     print "You've sunk the enemy {}. Huzzah! Battle on!".format(ships.ship_type)
                     ships.is_sunk = True
+                    pause_until_enter()
 
 
 def clear_screen():
@@ -36,8 +39,6 @@ def clear_screen():
         os.system("clear")
 
 
-def pause_until_enter():
-    raw_input("Press Enter to try again")
 
 
 class Game(object):
@@ -53,7 +54,7 @@ class Game(object):
         self.turn_counter = 0
         self.is_online = False
         self.player_1 = Player()
-        self.player_2 = None
+        self.player_2 = self.choose_second_player()
 
     def incr_turn_counter(self):
         self.turn_counter += 1
@@ -61,6 +62,13 @@ class Game(object):
     def server_methods(self):
         '''server methods will live here. someday'''
         pass
+    
+    def choose_second_player(self):
+        player_is_ai = raw_input("Would you like to commence training exercises against the supercomputer? '(Y)es' or '(N)o' ")
+        if player_is_ai.lower() == 'y' or player_is_ai.lower() == 'yes':
+            return AiPlayer()
+        else:
+            return Player()
 
 
 class Player(object):
@@ -73,12 +81,16 @@ class Player(object):
         the enemy
     """
     def __init__(self):
-        self.name = None
+        self.name = self.choose_name()
         self.own_board = GameBoard()
         self.other_board = GameBoard()
         self.move_log = {}
         self.fleet = []
         self.occupied_spaces = []
+    
+    def choose_name(self):
+        name = raw_input("What is your name and title? (e.g. Admiral Gray) ")
+        return name
 
     def game_display(self):
         print self.name + "'s turn"
@@ -181,6 +193,8 @@ class AiPlayer(Player):
     autonomous random selection for both ship placement and shots
     eventually, this class will contain the logic for intelligent AI
     """
+    def choose_name(self):
+        return "Supercomputer"
 
     def fire_shot(self, other_player):
         shot_tuple = random.choice(filter(lambda coord: coord not in self.other_board.hits or coord not in self.other_board.misses, self.other_board.all_spaces))
@@ -196,3 +210,4 @@ class AiPlayer(Player):
             other_player.own_board.misses.append(shot_tuple)
             self.other_board.misses.append(shot_tuple)
             pause_until_enter()
+    
