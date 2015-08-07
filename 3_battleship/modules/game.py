@@ -14,7 +14,7 @@ def shot_convert(letter_num):
     translation_key = {
         "a":1, "b":2, "c":3, "d":4, "e":5, "f":6, "g":7, "h":8, "i":9, "j":10,
     }
-    return (int(pre_tuple[1:]), translation_key[pre_tuple[0].lower()])
+    return (int("".join(pre_tuple[1:])), translation_key[pre_tuple[0].lower()])
 
 
 def damage_checker(ship_list, hits_coord_list):
