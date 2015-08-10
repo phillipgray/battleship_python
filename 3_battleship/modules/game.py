@@ -39,6 +39,7 @@ def clear_screen():
         os.system("clear")
 
 
+    
 
 
 class Game(object):
@@ -186,6 +187,17 @@ class Player(object):
                 self.other_board.misses.append(shot_tuple)
                 pause_until_enter()
                 break
+
+    def is_game_over(self, other_player):
+        '''checks other_player.fleet for game ending condition
+        returns True if all ships are sunk, False otherwise'''
+        for ship in other_player.fleet:
+            if not ship.is_sunk:
+                print "Naval exercises continue! Battle on!"
+                return False
+            else:
+                return True
+
 
 class AiPlayer(Player):
     """

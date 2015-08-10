@@ -10,7 +10,7 @@ class GameBoard(object):
     misses: list of tuples, (row, column), of all the misses
     display_board: all_spaces as 2D list
     """
-    def __init__(self, board_size=10):
+    def __init__(self, board_size=6):
         self.board_size = board_size
         self.all_spaces = self.set_position_list()
         self.hits = []

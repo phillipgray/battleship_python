@@ -18,6 +18,9 @@ test_game.player_1.own_board.draw_ships(test_game.player_1.fleet)
 
 test_game.player_1.game_display()
 
+
 while True:
     test_game.player_2.fire_shot(test_game.player_1)
+    if test_game.player_2.is_game_over(test_game.player_1): break
     test_game.player_1.fire_shot(test_game.player_2)
+    if test_game.player_1.is_game_over(test_game.player_2): break
