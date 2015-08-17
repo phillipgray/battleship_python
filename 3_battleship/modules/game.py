@@ -195,8 +195,8 @@ class Player(object):
             if not ship.is_sunk:
                 print "Naval exercises continue! Battle on!"
                 return False
-            else:
-                return True
+        else:
+            return True
 
 
 class AiPlayer(Player):
@@ -212,6 +212,7 @@ class AiPlayer(Player):
         for ship in self.fleet:
             ship.random_set_location(self.own_board.all_spaces, self.occupied_spaces)
         self.own_board.draw_ships(self.fleet)
+        print "{} is ready for naval exercises".format(self.name)
 
     def fire_shot(self, other_player):
         shot_tuple = random.choice(filter(lambda coord: coord not in self.other_board.hits or coord not in self.other_board.misses, self.other_board.all_spaces))
