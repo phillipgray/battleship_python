@@ -208,6 +208,11 @@ class AiPlayer(Player):
     def choose_name(self):
         return "Supercomputer"
 
+    def place_ships(self):
+        for ship in self.fleet:
+            ship.random_set_location(self.own_board.all_spaces, self.occupied_spaces)
+        self.own_board.draw_ships(self.fleet)
+
     def fire_shot(self, other_player):
         shot_tuple = random.choice(filter(lambda coord: coord not in self.other_board.hits or coord not in self.other_board.misses, self.other_board.all_spaces))
         
