@@ -5,8 +5,8 @@ import random
 
 
 # helper functions
-def pause_until_enter(instructions="continue"):
-    raw_input("Press Enter to {}".format(instructions))
+def pause_until_enter(instructions="to continue"):
+    raw_input("Press Enter {}".format(instructions))
 
 def shot_convert(letter_num):
     '''
@@ -39,7 +39,7 @@ def clear_screen():
         os.system("clear")
 
 
-    
+
 
 
 class Game(object):
@@ -179,13 +179,13 @@ class Player(object):
                 other_player.own_board.hits.append(shot_tuple)
                 self.other_board.hits.append(shot_tuple)
                 damage_checker(other_player.fleet, other_player.own_board.hits)
-                pause_until_enter()
+                # pause_until_enter()
                 break
             else:
                 print "Miss! Take aim elsewhere, Captain."
                 other_player.own_board.misses.append(shot_tuple)
                 self.other_board.misses.append(shot_tuple)
-                pause_until_enter()
+                # pause_until_enter()
                 break
 
     def is_game_over(self, other_player):
@@ -201,7 +201,7 @@ class Player(object):
 
 class AiPlayer(Player):
     """
-    inherits from Player class, replaces place_ships and fire_shot with 
+    inherits from Player class, replaces place_ships and fire_shot with
     autonomous random selection for both ship placement and shots
     eventually, this class will contain the logic for intelligent AI
     """
@@ -216,7 +216,7 @@ class AiPlayer(Player):
 
     def fire_shot(self, other_player):
         shot_tuple = random.choice(filter(lambda coord: coord not in self.other_board.hits or coord not in self.other_board.misses, self.other_board.all_spaces))
-        
+
         if shot_tuple in other_player.occupied_spaces:
             print "Hit! You sustained damage!"
             other_player.own_board.hits.append(shot_tuple)
@@ -228,4 +228,3 @@ class AiPlayer(Player):
             other_player.own_board.misses.append(shot_tuple)
             self.other_board.misses.append(shot_tuple)
             pause_until_enter()
-    
